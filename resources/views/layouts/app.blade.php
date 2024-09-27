@@ -1,7 +1,9 @@
 <!doctype html>
 
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" {{ $app = App\Models\general_settings::latest()->first() }}>
-
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+   @php
+    $settings = \App\Models\Settings::pluck('value', 'key')->toArray();
+@endphp
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,10 +20,8 @@
     <!-- Mobile Metas -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="{{ $app ? config('app.url') . 'storage/' . $app->favicon_path : config("app.url").'images/fevicon.ico.png'}} " type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ config('app.url') . 'storage/' . $settings["icon"]}} " type="image/x-icon" />
 
-    <link rel="apple-touch-icon"
-        href="{{ $app ? config('app.url') . 'storage/' . $app->favicon_path :  config("app.url").'images/favicon.png' }}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ config('app.url') }}css/bootstrap.min.css">
     <!-- Site CSS -->
@@ -38,10 +38,10 @@
     <script src="js/modernizer.js"></script>
     <!-- [if lt IE 9] -->
     @livewireStyles
-    @livewireScripts
 </head>
 
 <body class="clinic_version">
+ 
 
     <!-- LOADER -->
     <div id="preloader">
@@ -52,31 +52,31 @@
         <div class="header-top wow fadeIn">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}"><img
-                        src="{{ $app ? config('app.url') . 'storage/' . $app->logo_path :  config("app.url").'images/logo.png' }}"
+                        src="{{ config('app.url') . 'storage/' . $settings["logo"] }}"
                         alt="logo image "></a>
                 <div class="right-header">
                     <div class="header-info">
                         <div class="info-inner">
                             <span class="icontop"><img src="{{ config('app.url') }}images/phone-icon.png" alt="#"></span>
                             <span class="iconcont"><a
-                                    href="tel:{{ $app ? $app->business_phone : '123 123 123' }}">{{ $app ? $app->business_phone : '123 123 123' }}</a></span>
+                                    href="tel:{{ $settings["phone"] ?? '123 123 123' }}">{{ $settings["phone"] ?? '123 123 123' }}</a></span>
                         </div>
                         <div class="info-inner">
                             <span class="icontop"><i class="fa fa-envelope" aria-hidden="true"></i></span>
                             <span class="iconcont"><a data-scroll
-                                    href="mailto:{{ $app ? $app->business_email : 'tauseed@test.com' }}">{{ $app ? $app->business_email : 'tauseed@test.com' }}</a></span>
+                                    href="mailto:{{ $settings["email"] ?? 'tauseed@test.com' }}">{{ $settings["email"] ?? 'tauseed@test.com' }}</a></span>
                         </div>
                         <div class="info-inner">
                             <span class="icontop"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                             <span class="iconcont"><a data-scroll href="#">Daily:
-                                    {{ $app ? $app->working_horse : '7:00 AM - 8:00 PM' }}</a></span>
+                                    {{ $settings["working_horse"] ?? '7:00 AM - 8:00 PM' }}</a></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="header-bottom wow fadeIn">
-            <div class="container">
+            <div class="container-fluid">
                 <nav class="main-menu">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -103,15 +103,14 @@
                                             href="{{ route('admin_settings') }}">Admin Area</a></li>
                                 @endif
                             @endauth
-
                         </ul>
                     </div>
                 </nav>
-               @livewire('search')
+                @livewire('search')
             </div>
         </div>
     </header>
-    <main class="py-4">
+    <main id="main">
         @yield('content')
     </main>
     <a href="#home" data-scroll class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
@@ -120,9 +119,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="logo padding">
-                        <a href="{{ url('/') }}"><img src="{{ ($app) ? 'storage/'.$app->logo_path :  config("app.url").'images/logo.png' }}"
+                        <a href="{{ url('/') }}"><img src="{{ 'storage/'.$settings["logo"] ??  config("app.url").'images/logo.png' }}"
                                 alt=""></a>
-                        <p>{{ $app ? $app->description : 'hi this isLocavore pork belly scen ester pine est chill wave microdosing pop uple itarian cliche artisan.' }}
+                        <p>{{ $settings["description"] ?? 'hi this isLocavore pork belly scen ester pine est chill wave microdosing pop uple itarian cliche artisan.' }}
                         </p>
                     </div>
                 </div>
@@ -130,13 +129,13 @@
                     <div class="footer-info padding">
                         <h3>CONTACT US</h3>
                         <p><i class="fa fa-map-marker"
-                                aria-hidden="true"></i>{{ $app ? $app->address : 'distric abc P/O xyz sorana' }}
+                                aria-hidden="true"></i>{{ $settings["address"] ?? 'distric abc P/O xyz sorana' }}
                         </p>
                         <p><i class="fa fa-paper-plane"
-                                aria-hidden="true"></i>{{ $app ? $app->business_email : 'tauseed@test.com' }}
+                                aria-hidden="true"></i>{{ $settings["email"] ?? 'tauseed@test.com' }}
                         </p>
                         <p><i class="fa fa-phone"
-                                aria-hidden="true"></i>{{ $app ? $app->business_phone : '123 123 123' }}</p>
+                                aria-hidden="true"></i>{{ $settings["phone"] ?? '123 123 123' }}</p>
                     </div>
                 </div>
                 @livewire('subscribe')
@@ -168,12 +167,12 @@
         </div>
     </div>
     <!-- end copyrights -->
-
+    @livewireScripts
     <!-- all js files -->
     {{-- <script src="js/all.js"></script> --}}
-    <script src="js/all-in-one.js"></script>
+    <script src="{{ asset('js/all-in-one.js') }}"></script>
     <!-- all plugins -->
-    <script src="js/custom.js"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
     <script>
         function check_active(d) {
             document.getElementById(d).addAttribute('class', 'active');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class hod extends Model
 {
@@ -20,5 +21,10 @@ class hod extends Model
     public function department(): BelongsTo
     {
         return $this->belongsTo(department::class);
+    }
+
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(doctor::class);
     }
 }

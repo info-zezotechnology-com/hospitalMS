@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Http\Livewire\Admins\Blocks;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class department extends Model
 {
@@ -14,7 +17,7 @@ class department extends Model
         'description',
         'photo_path',
         'block_id',
-        'hod_id', //head of department
+        'hod_id',
     ];
 
     public function rooms()
@@ -29,7 +32,7 @@ class department extends Model
      */
     public function block(): BelongsTo
     {
-        return $this->belongsTo(blocks::class);
+        return $this->belongsTo(block::class);
     }
 
     /**
@@ -37,9 +40,9 @@ class department extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function hod(): HasOne
+    public function hod(): BelongsTo
     {
-        return $this->hasOne(hod::class);
+        return $this->BelongsTo(hod::class,'hod_id','id');
     }
 
 }

@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Admin Laravel</title>
-    <link href="{{  config('app.url') }}assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
-    <link href="{{  config('app.url') }}assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
-    <link href="{{  config('app.url') }}assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
-    <link href="{{  config('app.url') }}assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{  config('app.url') }}assets/css/master.css" rel="stylesheet">
+    <link href="{{ config('app.url') }}assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="{{ config('app.url') }}assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="{{ config('app.url') }}assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="{{ config('app.url') }}assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ config('app.url') }}assets/css/master.css" rel="stylesheet">
     {{-- <link href="{{  config('app.url') }}assets/vendor/chartsjs/Chart.min.css" rel="stylesheet"> --}}
-    <link href="{{  config('app.url') }}assets/vendor/flagiconcss/css/flag-icon.min.css" rel="stylesheet">
+    <link href="{{ config('app.url') }}assets/vendor/flagiconcss/css/flag-icon.min.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -31,11 +31,11 @@
             <ul class="mt-5 list-unstyled components text-secondary">
                 {{-- @auth --}}
                 <li>
-                    {{-- <a href="{{ route('admins') }}"><i class="fas fa-home"></i> Dashboard</a> --}}
+                    <a href="{{ route('admin_dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('admin_docters') }}"><i class="fas fa-file-alt"></i>Docters</a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ route('admin_operations_report') }}"><i class="fas fa-file-alt"></i>Operation
                         report</a>
@@ -46,10 +46,10 @@
                 <li>
                     <a href="{{ route('admin_patients') }}"><i class="fas fa-file-alt"></i>Patients</a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('nurses') }}"><i class="fas fa-file-alt"></i>Nurses</a>
-                </li>
-                <li>
+                </li>--}}
+                <li> 
                     <a href="{{ route('employees') }}"><i class="fas fa-file-alt"></i>Employees</a>
                 </li>
                 <li>
@@ -85,28 +85,8 @@
                     <a href="{{ route('contactedus') }}"><i class="fas fa-file-alt"></i>Contacted Messages</a>
                 </li>
                 <li>
-                    <a href="#authmenu" data-toggle="collapse" aria-expanded="false"
-                        class="dropdown-toggle no-caret-down"><i class="fas fa-user-shield"></i> Authentication</a>
-                    <ul class="collapse list-unstyled" id="authmenu">
-                        <li>
-                            <a href="login.html"><i class="fas fa-lock"></i> Login</a>
-                        </li>
-
-                        <li>
-                            <a href="forgot-password.html"><i class="fas fa-user-lock"></i> Forgot password</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
                     <a href="{{ route('admin_settings') }}"><i class="fas fa-cog"></i>Settings</a>
                 </li>
-                {{-- @endauth --}}
-                {{-- @guest --}}
-                <li>
-                    <a href="signup.html"><i class="fas fa-user-plus"></i> Signup</a>
-                </li>
-                {{-- @endguest --}}
-
             </ul>
         </nav>
         <div id="body" class="active">
@@ -122,13 +102,15 @@
                                         style="font-size: .8em;" class="fas fa-caret-down"></i></a>
                                 <div class="dropdown-menu dropdown-menu-right nav-link-menu">
                                     <ul class="nav-list">
-                                        <li><a href="" class="dropdown-item"><i class="fas fa-list"></i> Access Logs</a>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-list"></i> Access
+                                                Logs</a>
                                         </li>
                                         <div class="dropdown-divider"></div>
                                         <li><a href="" class="dropdown-item"><i class="fas fa-database"></i> Back
                                                 ups</a></li>
                                         <div class="dropdown-divider"></div>
-                                        <li><a href="" class="dropdown-item"><i class="fas fa-cloud-download-alt"></i>
+                                        <li><a href="" class="dropdown-item"><i
+                                                    class="fas fa-cloud-download-alt"></i>
                                                 Updates</a></li>
                                         <div class="dropdown-divider"></div>
                                         <li><a href="" class="dropdown-item"><i class="fas fa-user-shield"></i>
@@ -145,15 +127,23 @@
                                         class="fas fa-caret-down"></i></a>
                                 <div class="dropdown-menu dropdown-menu-right nav-link-menu">
                                     <ul class="nav-list">
-                                        <li><a href="" class="dropdown-item"><i class="fas fa-address-card"></i>
+                                        <li><a href="" class="dropdown-item"><i
+                                                    class="fas fa-address-card"></i>
                                                 Profile</a></li>
                                         <li><a href="" class="dropdown-item"><i class="fas fa-envelope"></i>
                                                 Messages</a></li>
-                                        <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i>
+                                                Settings</a>
                                         </li>
                                         <div class="dropdown-divider"></div>
-                                        <li><a href="{{ route('login') }}" class="dropdown-item"><i
-                                                    class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                        <li>
+                                            <form method="POST" action="{{ route('logout') }}">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item logout-button">
+                                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                                </button>
+                                            </form>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -170,13 +160,13 @@
                     @yield('admin_content')
                     @livewireScripts
 
-                    <script src="{{  config('app.url') }}js/livewire-turbolinks.js"></script>
-                    <script src="{{  config('app.url') }}js/alpine.js"></script>
-                    <script src="{{  config('app.url') }}assets/vendor/jquery/jquery.min.js"></script>
-                    <script src="{{  config('app.url') }}assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                    <script src="{{ config('app.url') }}js/livewire-turbolinks.js"></script>
+                    <script src="{{ config('app.url') }}js/alpine.js"></script>
+                    <script src="{{ config('app.url') }}assets/vendor/jquery/jquery.min.js"></script>
+                    <script src="{{ config('app.url') }}assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
                     {{-- <script src="{{  config('app.url') }}assets/vendor/chartsjs/Chart.min.js"></script> --}}
                     {{-- <script src="{{  config('app.url') }}assets/js/dashboard-charts.js"></script> --}}
-                    <script src="{{  config('app.url') }}assets/js/script.js"></script>
+                    <script src="{{ config('app.url') }}assets/js/script.js"></script>
 </body>
 
 </html>

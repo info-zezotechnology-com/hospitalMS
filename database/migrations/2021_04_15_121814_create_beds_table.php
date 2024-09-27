@@ -17,9 +17,11 @@ class CreateBedsTable extends Migration
             $table->id();
             $table->foreignId('room_id')->constrained();
             $table->foreignId('patient_id')->nullable()->constrained();
-            $table->string('alloted_time')->nullable();
-            $table->string('discharge_time')->nullable();
+            $table->enum('status', ['alloted', 'available'])->default('available');
+            $table->timestamp("alloted_time")->nullable();
+            $table->timestamp("discharge_time")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
